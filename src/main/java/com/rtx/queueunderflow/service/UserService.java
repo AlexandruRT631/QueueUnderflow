@@ -1,6 +1,5 @@
 package com.rtx.queueunderflow.service;
 
-import com.rtx.queueunderflow.dto.UserDTO;
 import com.rtx.queueunderflow.entity.User;
 import com.rtx.queueunderflow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

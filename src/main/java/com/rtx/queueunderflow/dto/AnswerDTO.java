@@ -1,7 +1,5 @@
 package com.rtx.queueunderflow.dto;
 
-import com.rtx.queueunderflow.entity.Vote;
-
 import java.util.Date;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.rtx.queueunderflow.service;
 
-import com.rtx.queueunderflow.entity.Answer;
 import com.rtx.queueunderflow.entity.Question;
 import com.rtx.queueunderflow.repository.AnswerRepository;
 import com.rtx.queueunderflow.repository.QuestionRepository;
