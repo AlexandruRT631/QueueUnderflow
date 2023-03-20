@@ -30,7 +30,6 @@ public class QuestionController {
         question.setQuestion(true);
         question.setVotes(new ArrayList<>());
         question.setAnswers(new ArrayList<>());
-        question.setTags(new ArrayList<>());
         return questionService.saveQuestion(question);
     }
 
