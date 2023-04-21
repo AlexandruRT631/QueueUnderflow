@@ -9,6 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends CrudRepository<Answer, Long> {
-    List<Answer> findByQuestionIsFalse();
-    Optional<Answer> findByPostIdAndQuestionIsFalse(Long answerId);
 }

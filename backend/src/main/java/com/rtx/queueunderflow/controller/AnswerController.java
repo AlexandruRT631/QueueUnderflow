@@ -1,6 +1,7 @@
 package com.rtx.queueunderflow.controller;
 
 import com.rtx.queueunderflow.dto.AnswerDTO;
+import com.rtx.queueunderflow.dto.QuestionDTO;
 import com.rtx.queueunderflow.dto.VoteDTO;
 import com.rtx.queueunderflow.entity.Answer;
 import com.rtx.queueunderflow.service.AnswerService;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/answers")
+@CrossOrigin
 public class AnswerController {
     @Autowired
     AnswerService answerService;
@@ -22,31 +24,45 @@ public class AnswerController {
     @PostMapping("/insertAnswer")
     @ResponseBody
     public Answer insertAnswer(@RequestBody Answer answer) {
-        answer.setQuestion(false);
         answer.setVotes(new ArrayList<>());
         return answerService.saveAnswer(answer);
     }
 
     @GetMapping("/getAll")
     @ResponseBody
-    public List<Answer> retrieveQuestions() {
-        return answerService.retrieveAnswers();
+    public List<AnswerDTO> retrieveQuestions() {
+        return answerService.retrieveAnswers().stream().map(answer -> new AnswerDTO(
+                answer.getUser().getFirstName(),
+                answer.getUser().getLastName(),
+                answer.getQuestion().getTitle(),
+                answer.getContent(),
+                answer.getDate(),
+                answer.getPicture(),
+                answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
+        )).toList();
     }
 
     @GetMapping("/getById/{answer_id}")
     @ResponseBody
     public AnswerDTO retrieveById(@PathVariable Long answer_id) {
         Answer answer = answerService.retrieveAnswerByID(answer_id);
-        List<VoteDTO> votes = answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList();
-        return new AnswerDTO(userService.retrieveUserByID(answer.getUserId()).getFirstName(), userService.retrieveUserByID(answer.getUserId()).getLastName(), answer.getTitle(), answer.getContent(), answer.getDate(), answer.getPicture(), votes);
+        return new AnswerDTO(
+                answer.getUser().getFirstName(),
+                answer.getUser().getLastName(),
+                answer.getQuestion().getTitle(),
+                answer.getContent(),
+                answer.getDate(),
+                answer.getPicture(),
+                answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
+        );
     }
 
     @PutMapping("/updateAnswer")
     @ResponseBody
     public Answer updateAnswer(@RequestBody Answer answer) {
-        Answer oldAnswer = answerService.retrieveAnswerByID(answer.getPostId());
-        answer.replaceNullFields(oldAnswer);
-        return answerService.saveAnswer(answer);
+        Answer newAnswer = answerService.retrieveAnswerByID(answer.getAnswerId());
+        newAnswer.replaceFields(answer);
+        return answerService.saveAnswer(newAnswer);
     }
 
     @DeleteMapping("/deleteById/{answer_id}")

@@ -1,5 +1,6 @@
 package com.rtx.queueunderflow.service;
 
+import com.rtx.queueunderflow.entity.Answer;
 import com.rtx.queueunderflow.entity.Question;
 import com.rtx.queueunderflow.repository.AnswerRepository;
 import com.rtx.queueunderflow.repository.QuestionRepository;
@@ -17,11 +18,11 @@ public class QuestionService {
     AnswerRepository answerRepository;
 
     public List<Question> retrieveQuestions() {
-        return (List<Question>) questionRepository.findByQuestionIsTrue();
+        return (List<Question>) questionRepository.findAll();
     }
 
     public Question retrieveQuestionById(Long questionId) {
-        Optional<Question> question = questionRepository.findByPostIdAndQuestionIsTrue(questionId);
+        Optional<Question> question = questionRepository.findById(questionId);
         if (question.isPresent()) {
             return question.get();
         } else {
@@ -34,11 +35,11 @@ public class QuestionService {
     }
 
     public String deleteById(Long questionId) {
-        Optional<Question> question = questionRepository.findByPostIdAndQuestionIsTrue(questionId);
+        Optional<Question> question = questionRepository.findById(questionId);
         if (question.isPresent()) {
             try {
-                for (Long answerId : question.get().getAnswers()) {
-                    answerRepository.deleteById(answerId);
+                for (Answer answer : question.get().getAnswers()) {
+                    answerRepository.deleteById(answer.getAnswerId());
                 }
                 questionRepository.deleteById(questionId);
                 return "Success";

@@ -14,11 +14,11 @@ public class AnswerService {
     AnswerRepository answerRepository;
 
     public List<Answer> retrieveAnswers() {
-        return (List<Answer>) answerRepository.findByQuestionIsFalse();
+        return (List<Answer>) answerRepository.findAll();
     }
 
     public Answer retrieveAnswerByID(Long answerId) {
-        Optional<Answer> answer = answerRepository.findByPostIdAndQuestionIsFalse(answerId);
+        Optional<Answer> answer = answerRepository.findById(answerId);
         if (answer.isPresent()) {
             return answer.get();
         } else {
@@ -32,7 +32,7 @@ public class AnswerService {
 
 
     public String deleteById(Long answerId) {
-        Optional<Answer> answer = answerRepository.findByPostIdAndQuestionIsFalse(answerId);
+        Optional<Answer> answer = answerRepository.findById(answerId);
         if (answer.isPresent()) {
             try {
                 answerRepository.deleteById(answerId);

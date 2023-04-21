@@ -2,6 +2,8 @@ package com.rtx.queueunderflow.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -33,6 +35,12 @@ public class User {
 
     @Column(name="banned")
     private boolean banned;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers;
 
     public User() {
     }
@@ -121,31 +129,46 @@ public class User {
         this.banned = banned;
     }
 
-    public void replaceNullFields(User user) {
-        if (this.firstName == null) {
-            this.firstName = user.getFirstName();
-        }
-        if (this.lastName == null) {
-            this.lastName = user.getLastName();
-        }
-        if (this.eMail == null) {
-            this.eMail = user.geteMail();
-        }
-        if (this.password == null) {
-            this.password = user.getPassword();
-        }
-        if (this.phone == null) {
-            this.phone = user.getPhone();
-        }
-        if (this.picture == null) {
-            this.picture = user.getPicture();
-        }
-        if (!this.moderator) {
-            this.moderator = user.isModerator();
-        }
-        if (!this.banned) {
-            this.banned = user.isBanned();
-        }
+    public List<Question> getQuestions() {
+        return questions;
+    }
 
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
+
+    public void replaceFields(User user) {
+        if (user.getFirstName() != null) {
+            this.setFirstName(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            this.setLastName(user.getLastName());
+        }
+        if (user.geteMail() != null) {
+            this.seteMail(user.geteMail());
+        }
+        if (user.getPassword() != null) {
+            this.setPassword(user.getPassword());
+        }
+        if (user.getPhone() != null) {
+            this.setPhone(user.getPhone());
+        }
+        if (user.getPicture() != null) {
+            this.setPicture(user.getPicture());
+        }
+        if (user.isModerator() != this.isModerator()) {
+            this.setModerator(user.isModerator());
+        }
+        if (user.isBanned() != this.isBanned()) {
+            this.setBanned(user.isBanned());
+        }
     }
 }
