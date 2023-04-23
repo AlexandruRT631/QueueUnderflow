@@ -39,20 +39,27 @@ public class QuestionController {
     public List<QuestionDTO> retrieveQuestions() {
         return questionService.retrieveQuestions().stream().map(question ->
             new QuestionDTO(
+                    question.getQuestionId(),
+                    question.getUser().getUserId(),
                     question.getUser().getFirstName(),
                     question.getUser().getLastName(),
+                    question.getUser().getPicture(),
                     question.getTitle(),
                     question.getContent(),
-                    question.getDate(),
+                    question.getDate().toString(),
                     question.getPicture(),
                     question.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList(),
                     question.getAnswers().stream().map(answer ->
                         new AnswerDTO(
+                                answer.getAnswerId(),
+                                answer.getUser().getUserId(),
                                 answer.getUser().getFirstName(),
                                 answer.getUser().getLastName(),
+                                answer.getUser().getPicture(),
+                                answer.getQuestion().getQuestionId(),
                                 answer.getQuestion().getTitle(),
                                 answer.getContent(),
-                                answer.getDate(),
+                                answer.getDate().toString(),
                                 answer.getPicture(),
                                 answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
                     )).toList(),
@@ -69,18 +76,22 @@ public class QuestionController {
         }
         List<AnswerDTO> answers = question.getAnswers().stream().map(answer -> {
             return new AnswerDTO(
+                    answer.getAnswerId(),
+                    answer.getUser().getUserId(),
                     answer.getUser().getFirstName(),
                     answer.getUser().getLastName(),
+                    answer.getUser().getPicture(),
+                    answer.getQuestion().getQuestionId(),
                     answer.getQuestion().getTitle(),
                     answer.getContent(),
-                    answer.getDate(),
+                    answer.getDate().toString(),
                     answer.getPicture(),
                     answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
             );
         }).toList();
         List<String> tags = question.getTags();
         List<VoteDTO> votes = question.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList();
-        return new QuestionDTO(question.getUser().getFirstName(), question.getUser().getLastName(), question.getTitle(), question.getContent(), question.getDate(), question.getPicture(), votes, answers, tags);
+        return new QuestionDTO(question.getQuestionId(), question.getUser().getUserId(), question.getUser().getFirstName(), question.getUser().getLastName(), question.getUser().getPicture(), question.getTitle(), question.getContent(), question.getDate().toString(), question.getPicture(), votes, answers, tags);
     }
 
     @PutMapping("/updateQuestion")

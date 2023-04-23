@@ -32,11 +32,15 @@ public class AnswerController {
     @ResponseBody
     public List<AnswerDTO> retrieveQuestions() {
         return answerService.retrieveAnswers().stream().map(answer -> new AnswerDTO(
+                answer.getAnswerId(),
+                answer.getUser().getUserId(),
                 answer.getUser().getFirstName(),
                 answer.getUser().getLastName(),
+                answer.getUser().getPicture(),
+                answer.getQuestion().getQuestionId(),
                 answer.getQuestion().getTitle(),
                 answer.getContent(),
-                answer.getDate(),
+                answer.getDate().toString(),
                 answer.getPicture(),
                 answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
         )).toList();
@@ -47,11 +51,15 @@ public class AnswerController {
     public AnswerDTO retrieveById(@PathVariable Long answer_id) {
         Answer answer = answerService.retrieveAnswerByID(answer_id);
         return new AnswerDTO(
+                answer.getAnswerId(),
+                answer.getUser().getUserId(),
                 answer.getUser().getFirstName(),
                 answer.getUser().getLastName(),
+                answer.getUser().getPicture(),
+                answer.getQuestion().getQuestionId(),
                 answer.getQuestion().getTitle(),
                 answer.getContent(),
-                answer.getDate(),
+                answer.getDate().toString(),
                 answer.getPicture(),
                 answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
         );

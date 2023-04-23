@@ -1,18 +1,34 @@
 package com.rtx.queueunderflow.dto;
 
+import java.util.List;
+
 public class UserDTO {
+    private Long id;
     private String firstName;
     private String lastName;
     private String picture;
     private boolean moderator;
     private boolean banned;
+    private List<QuestionDTO> questions;
+    private List<AnswerDTO> answers;
 
-    public UserDTO(String firstName, String lastName, String picture, boolean moderator, boolean banned) {
+    public UserDTO(Long id, String firstName, String lastName, String picture, boolean moderator, boolean banned, List<QuestionDTO> questions, List<AnswerDTO> answers) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.picture = picture;
         this.moderator = moderator;
         this.banned = banned;
+        this.questions = questions;
+        this.answers = answers;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -53,5 +69,21 @@ public class UserDTO {
 
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    public List<QuestionDTO> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionDTO> questions) {
+        this.questions = questions;
+    }
+
+    public List<AnswerDTO> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerDTO> answers) {
+        this.answers = answers;
     }
 }

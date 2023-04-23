@@ -61,14 +61,14 @@ FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 insert into users (first_name, last_name, e_mail, pass, picture) values
-( "Alexandru", "Radu-Todor", "test1@yahoo.com", "parola", "https://avatars.githubusercontent.com/u/50906589?v=4" );
-insert into users (first_name, last_name, e_mail, pass, phone) values
-( "Sergiu", "Radu-Todor", "test2@yahoo.com", "parola2", "0000000000" );
+( "Alexandru", "RT", "test1@yahoo.com", "parola", "https://avatars.githubusercontent.com/u/50906589?v=4" );
+insert into users (first_name, last_name, e_mail, pass, phone, banned) values
+( "Sergiu", "RT", "test2@yahoo.com", "parola2", "0000000000", true );
 insert into users (first_name, last_name, e_mail, pass, moderator) values
-( "Cornelia", "Radu-Todor", "test3@yahoo.com", "parola2", true );
+( "Cornelia", "RT", "test3@yahoo.com", "parola2", true );
 
 insert into questions (user_id, content, title) values
-(2, 'TestContent', 'TestTitle'), (1, 'TestContent3', 'TestTitle3');
+(2, 'QUESTION Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'TestTitle'), (1, 'TestContent3', 'TestTitle3');
 
 insert into question_votes values
 (1, 1, false);
@@ -76,8 +76,10 @@ insert into question_votes values
 insert into list_of_tags values 
 ( 1, 'Test1'), (1, 'Test2'), (1, 'Test3'), (2, 'Test4');
 
+insert into answers (user_id, content, picture, question_id) values
+(1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', "https://images.alphacoders.com/127/thumb-1920-1272163.jpg", 1);
 insert into answers (user_id, content, question_id) values
-(1, 'TestContent2', 1);
+(2, '2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 1);
 
 insert into answer_votes values
 (1, 1, true), (1, 3, true);

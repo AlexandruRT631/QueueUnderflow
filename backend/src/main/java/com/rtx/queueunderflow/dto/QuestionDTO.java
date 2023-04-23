@@ -4,19 +4,25 @@ import java.util.Date;
 import java.util.List;
 
 public class QuestionDTO {
+    private Long id;
+    private Long userId;
     private String userFirstName;
     private String userLastName;
+    private String userPicture;
     private String title;
     private String content;
-    private Date date;
+    private String date;
     private String picture;
     private List<VoteDTO> votes;
     private List<AnswerDTO> answers;
     private List<String> tags;
 
-    public QuestionDTO(String userFirstName, String userLastName, String title, String content, Date date, String picture, List<VoteDTO> votes, List<AnswerDTO> answers, List<String> tags) {
+    public QuestionDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, String title, String content, String date, String picture, List<VoteDTO> votes, List<AnswerDTO> answers, List<String> tags) {
+        this.id = id;
+        this.userId = userId;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
+        this.userPicture = userPicture;
         this.title = title;
         this.content = content;
         this.date = date;
@@ -24,6 +30,22 @@ public class QuestionDTO {
         this.votes = votes;
         this.answers = answers;
         this.tags = tags;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUserFirstName() {
@@ -42,6 +64,14 @@ public class QuestionDTO {
         this.userLastName = userLastName;
     }
 
+    public String getUserPicture() {
+        return userPicture;
+    }
+
+    public void setUserPicture(String userPicture) {
+        this.userPicture = userPicture;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -58,11 +88,11 @@ public class QuestionDTO {
         this.content = content;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

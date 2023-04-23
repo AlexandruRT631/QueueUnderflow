@@ -23,19 +23,23 @@ public class UserController {
 
     @GetMapping("/getAll")
     @ResponseBody
-    public List<UserDTOQA> retrieveUsers() {
-        return userService.retrieveUsers().stream().map(user -> new UserDTOQA(
+    public List<UserDTO> retrieveUsers() {
+        return userService.retrieveUsers().stream().map(user -> new UserDTO(
+                user.getUserId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPicture(),
                 user.isModerator(),
                 user.isBanned(),
                 user.getQuestions().stream().map(question -> new QuestionDTO(
+                        question.getQuestionId(),
+                        null,
+                        null,
                         null,
                         null,
                         question.getTitle(),
                         question.getContent(),
-                        question.getDate(),
+                        question.getDate().toString(),
                         question.getPicture(),
                         question.getVotes().stream().map(vote -> new VoteDTO(
                                 userService.retrieveUserByID(vote.getUserId()).getFirstName(),
@@ -46,11 +50,15 @@ public class UserController {
                         question.getTags()
                 )).toList(),
                 user.getAnswers().stream().map(answer -> new AnswerDTO(
+                        answer.getAnswerId(),
                         null,
                         null,
+                        null,
+                        null,
+                        answer.getQuestion().getQuestionId(),
                         answer.getQuestion().getTitle(),
                         answer.getContent(),
-                        answer.getDate(),
+                        answer.getDate().toString(),
                         answer.getPicture(),
                         answer.getVotes().stream().map(vote -> new VoteDTO(
                                 userService.retrieveUserByID(vote.getUserId()).getFirstName(),
@@ -65,14 +73,97 @@ public class UserController {
     @ResponseBody
     public UserDTO retrieveById(@PathVariable Long user_id) {
         User user = userService.retrieveUserByID(user_id);
-        return new UserDTO(user.getFirstName(), user.getLastName(), user.getPicture(), user.isModerator(), user.isBanned());
+        return new UserDTO(
+                user.getUserId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPicture(),
+                user.isModerator(),
+                user.isBanned(),
+                user.getQuestions().stream().map(question -> new QuestionDTO(
+                        question.getQuestionId(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        question.getTitle(),
+                        question.getContent(),
+                        question.getDate().toString(),
+                        question.getPicture(),
+                        question.getVotes().stream().map(vote -> new VoteDTO(
+                                userService.retrieveUserByID(vote.getUserId()).getFirstName(),
+                                userService.retrieveUserByID(vote.getUserId()).getLastName(),
+                                vote.isPositiveVote()
+                        )).toList(),
+                        null,
+                        question.getTags()
+                )).toList(),
+                user.getAnswers().stream().map(answer -> new AnswerDTO(
+                        answer.getAnswerId(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        answer.getQuestion().getQuestionId(),
+                        answer.getQuestion().getTitle(),
+                        answer.getContent(),
+                        answer.getDate().toString(),
+                        answer.getPicture(),
+                        answer.getVotes().stream().map(vote -> new VoteDTO(
+                                userService.retrieveUserByID(vote.getUserId()).getFirstName(),
+                                userService.retrieveUserByID(vote.getUserId()).getLastName(),
+                                vote.isPositiveVote()
+                        )).toList()
+                )).toList());
     }
 
     @GetMapping("/getById")
     @ResponseBody
     public UserDTO retrieveById1(@RequestParam("user_id") Long user_id) {
         User user = userService.retrieveUserByID(user_id);
-        return new UserDTO(user.getFirstName(), user.getLastName(), user.getPicture(), user.isModerator(), user.isBanned());
+        return new UserDTO(
+                user.getUserId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPicture(),
+                user.isModerator(),
+                user.isBanned(),
+                user.getQuestions().stream().map(question -> new QuestionDTO(
+                        question.getQuestionId(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        question.getTitle(),
+                        question.getContent(),
+                        question.getDate().toString(),
+                        question.getPicture(),
+                        question.getVotes().stream().map(vote -> new VoteDTO(
+                                userService.retrieveUserByID(vote.getUserId()).getFirstName(),
+                                userService.retrieveUserByID(vote.getUserId()).getLastName(),
+                                vote.isPositiveVote()
+                        )).toList(),
+                        null,
+                        question.getTags()
+                )).toList(),
+                    user.getAnswers().stream().map(answer -> new AnswerDTO(
+                        answer.getAnswerId(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        answer.getQuestion().getQuestionId(),
+                        answer.getQuestion().getTitle(),
+                        answer.getContent(),
+                        answer.getDate().toString(),
+                        answer.getPicture(),
+                        answer.getVotes().stream().map(vote -> new VoteDTO(
+                                userService.retrieveUserByID(vote.getUserId()).getFirstName(),
+                                userService.retrieveUserByID(vote.getUserId()).getLastName(),
+                                vote.isPositiveVote()
+                        )).toList()
+                )).toList()
+        );
     }
 
     @PutMapping("/updateUser")
