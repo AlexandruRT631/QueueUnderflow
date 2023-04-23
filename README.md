@@ -17,10 +17,10 @@ TO DO when the project is finished
 ### User Page
 The page is accessed by "./users/{id}". <br />
 Pressing any of the answers or questions redirects you to the page of that question. <br />
-![alt text](https://github.com/AlexandruRT631/QueueUnderflow/tree/main/frontend/UserPage.png?raw=true)
+![alt text](https://raw.githubusercontent.com/AlexandruRT631/QueueUnderflow/main/frontend/UserPage.png?raw=true)
 ### Question Page
 The page is accessed by "./questions/{id}.  <br />
 In the question component, pressing any tag from the list will redirect you to a list with all the questions with the same tag. (TO DO) <br />
 Pressing the upvote or downvote button on a post will modify it's counter. Each user has only one vote, but it can be changed (TO DO) <br />
 Pressing a profile picture or a name will redirect you to the page of that user. <br />
-![alt text](https://github.com/AlexandruRT631/QueueUnderflow/tree/main/frontend/QuestionPage.png?raw=true)
+![alt text](https://raw.githubusercontent.com/AlexandruRT631/QueueUnderflow/main/frontend/QuestionPage.png?raw=true)
