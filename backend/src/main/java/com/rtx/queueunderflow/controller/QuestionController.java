@@ -37,34 +37,13 @@ public class QuestionController {
     @GetMapping("/getAll")
     @ResponseBody
     public List<QuestionDTO> retrieveQuestions() {
-        return questionService.retrieveQuestions().stream().map(question ->
-            new QuestionDTO(
-                    question.getQuestionId(),
-                    question.getUser().getUserId(),
-                    question.getUser().getFirstName(),
-                    question.getUser().getLastName(),
-                    question.getUser().getPicture(),
-                    question.getTitle(),
-                    question.getContent(),
-                    question.getDate().toString(),
-                    question.getPicture(),
-                    question.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList(),
-                    question.getAnswers().stream().map(answer ->
-                        new AnswerDTO(
-                                answer.getAnswerId(),
-                                answer.getUser().getUserId(),
-                                answer.getUser().getFirstName(),
-                                answer.getUser().getLastName(),
-                                answer.getUser().getPicture(),
-                                answer.getQuestion().getQuestionId(),
-                                answer.getQuestion().getTitle(),
-                                answer.getContent(),
-                                answer.getDate().toString(),
-                                answer.getPicture(),
-                                answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
-                    )).toList(),
-                    question.getTags()
-        )).toList();
+        return questionService.retrieveQuestions().stream().map(question -> new QuestionDTO(question, userService)).toList();
+    }
+
+    @GetMapping("/tag/{tag}")
+    @ResponseBody
+    public List<QuestionDTO> retrieveQuestionsByTag(@PathVariable String tag) {
+        return questionService.retrieveQuestionsByTag(tag).stream().map(question -> new QuestionDTO(question, userService)).toList();
     }
 
     @GetMapping("/getById/{question_id}")

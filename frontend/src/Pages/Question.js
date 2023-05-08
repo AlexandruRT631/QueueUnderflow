@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import DisplayAnswer from "./DisplayAnswer";
+import DisplayAnswer from "../Display/DisplayAnswer";
 import {Container} from "@mui/material";
-import DisplayQuestion from "./DisplayQuestion";
+import DisplayQuestion from "../Display/DisplayQuestion";
 
 const Question = (props) => {
     const [loaded, setLoaded] = useState(false)

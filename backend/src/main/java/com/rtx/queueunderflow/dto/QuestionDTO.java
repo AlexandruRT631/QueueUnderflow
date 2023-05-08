@@ -1,5 +1,8 @@
 package com.rtx.queueunderflow.dto;
 
+import com.rtx.queueunderflow.entity.Question;
+import com.rtx.queueunderflow.service.UserService;
+
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +33,38 @@ public class QuestionDTO {
         this.votes = votes;
         this.answers = answers;
         this.tags = tags;
+    }
+
+    public QuestionDTO(Question question, UserService userService) {
+        this.id = question.getQuestionId();
+        this.userId = question.getUser().getUserId();
+        this.userFirstName = question.getUser().getFirstName();
+        this.userLastName = question.getUser().getLastName();
+        this.userPicture = question.getUser().getPicture();
+        this.title = question.getTitle();
+        this.content = question.getContent();
+        this.date = question.getDate().toString();
+        this.picture = question.getPicture();
+        this.votes = question.getVotes().stream().map(vote -> new VoteDTO(
+                userService.retrieveUserByID(vote.getUserId()).getFirstName(),
+                userService.retrieveUserByID(vote.getUserId()).getLastName(),
+                vote.isPositiveVote()
+        )).toList();
+        this.answers = question.getAnswers().stream().map(answer ->
+                        new AnswerDTO(
+                                answer.getAnswerId(),
+                                answer.getUser().getUserId(),
+                                answer.getUser().getFirstName(),
+                                answer.getUser().getLastName(),
+                                answer.getUser().getPicture(),
+                                answer.getQuestion().getQuestionId(),
+                                answer.getQuestion().getTitle(),
+                                answer.getContent(),
+                                answer.getDate().toString(),
+                                answer.getPicture(),
+                                answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
+                        )).toList();
+        this.tags = question.getTags();
     }
 
     public Long getId() {

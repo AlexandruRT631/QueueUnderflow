@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import DisplayAnswer from "./DisplayAnswer";
+import DisplayAnswer from "../Display/DisplayAnswer";
 
 const Answer = () => {
     const [loaded, setLoaded] = useState(false)

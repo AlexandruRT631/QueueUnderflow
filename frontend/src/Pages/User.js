@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {Avatar, Box, Container, ThemeProvider, Typography} from "@mui/material";
-import DisplayPost from "./DisplayPost";
+import DisplayPost from "../Display/DisplayPost";
 
 const User = (props) => {
     const [loaded, setLoaded] = useState(false)

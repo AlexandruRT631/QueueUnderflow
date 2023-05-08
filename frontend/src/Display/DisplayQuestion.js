@@ -12,7 +12,7 @@ const DisplayQuestion = (props) => {
                     <Typography sx={{p: 1}}>
                         Tags: {props.tags
                             .map((tag) => (
-                                <Link key={tag} href={'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconInactive_n5ydt0uuj6x11.png'} sx={{textDecoration: 'none', color: 'primary.contrastText'}}>{tag}</Link>
+                                <Link key={tag} href={`/tag/${tag}`} sx={{textDecoration: 'none', color: 'primary.contrastText'}}>{tag}</Link>
                             ))
                         .reduce((prev, curr) => [prev, ', ', curr])
                         }

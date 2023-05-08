@@ -21,6 +21,10 @@ public class QuestionService {
         return (List<Question>) questionRepository.findAll();
     }
 
+    public List<Question> retrieveQuestionsByTag(String tag) {
+        return (List<Question>) questionRepository.findByTagsContaining(tag);
+    }
+
     public Question retrieveQuestionById(Long questionId) {
         Optional<Question> question = questionRepository.findById(questionId);
         if (question.isPresent()) {
