@@ -1,5 +1,6 @@
 package com.rtx.queueunderflow.service;
 
+import com.rtx.queueunderflow.dto.QuestionDTO;
 import com.rtx.queueunderflow.entity.Answer;
 import com.rtx.queueunderflow.entity.Question;
 import com.rtx.queueunderflow.repository.AnswerRepository;
@@ -7,6 +8,7 @@ import com.rtx.queueunderflow.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,25 +19,42 @@ public class QuestionService {
     @Autowired
     AnswerRepository answerRepository;
 
-    public List<Question> retrieveQuestions() {
-        return (List<Question>) questionRepository.findAll();
+    @Autowired
+    UserService userService;
+
+    public List<QuestionDTO> retrieveQuestions() {
+        return ((List<Question>) questionRepository.findAll()).stream().map(question -> new QuestionDTO(question, userService)).toList();
     }
 
-    public List<Question> retrieveQuestionsByTag(String tag) {
-        return (List<Question>) questionRepository.findByTagsContaining(tag);
+    public List<QuestionDTO> retrieveQuestionsByTag(String tag) {
+        return ((List<Question>) questionRepository.findByTagsContaining(tag)).stream().map(question -> new QuestionDTO(question, userService)).toList();
     }
 
-    public Question retrieveQuestionById(Long questionId) {
-        Optional<Question> question = questionRepository.findById(questionId);
-        if (question.isPresent()) {
-            return question.get();
+    public QuestionDTO retrieveQuestionById(Long questionId) {
+        Optional<Question> questionGot = questionRepository.findById(questionId);
+        if (questionGot.isPresent()) {
+            Question question = questionGot.get();
+            return new QuestionDTO(question, userService);
         } else {
             return null;
         }
     }
 
     public Question saveQuestion(Question question) {
+        question.setVotes(new ArrayList<>());
+        question.setAnswers(new ArrayList<>());
         return questionRepository.save(question);
+    }
+
+    public Question updateQuestion(Question question) {
+        Optional<Question> oldQuestionGot = questionRepository.findById(question.getQuestionId());
+        if (oldQuestionGot.isPresent()) {
+            Question oldQuestion = oldQuestionGot.get();
+            question.replaceFields(oldQuestion);
+            return questionRepository.save(question);
+        } else {
+            return null;
+        }
     }
 
     public String deleteById(Long questionId) {

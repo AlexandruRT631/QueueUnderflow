@@ -1,6 +1,7 @@
 package com.rtx.queueunderflow.dto;
 
 import com.rtx.queueunderflow.entity.Answer;
+import com.rtx.queueunderflow.service.UserService;
 
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,20 @@ public class AnswerDTO {
         this.date = date;
         this.picture = picture;
         this.votes = votes;
+    }
+
+    public AnswerDTO(Answer answer, UserService userService) {
+        this.id = answer.getAnswerId();
+        this.userId = answer.getUser().getUserId();
+        this.userFirstName = answer.getUser().getFirstName();
+        this.userLastName =  answer.getUser().getLastName();
+        this.userPicture = answer.getUser().getPicture();
+        this.questionId = answer.getQuestion().getQuestionId();
+        this.questionTitle = answer.getQuestion().getTitle();
+        this.content = answer.getContent();
+        this.date = answer.getDate().toString();
+        this.picture = answer.getPicture();
+        this.votes = answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList();
     }
 
     public Long getId() {
