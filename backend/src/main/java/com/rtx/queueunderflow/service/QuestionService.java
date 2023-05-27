@@ -20,22 +20,19 @@ public class QuestionService {
     @Autowired
     AnswerRepository answerRepository;
 
-    @Autowired
-    UserService userService;
-
     public List<QuestionDTO> retrieveQuestions() {
-        return ((List<Question>) questionRepository.findAll()).stream().map(question -> new QuestionDTO(question, userService)).toList();
+        return ((List<Question>) questionRepository.findAll()).stream().map(QuestionDTO::new).toList();
     }
 
     public List<QuestionDTO> retrieveQuestionsByTag(String tag) {
-        return ((List<Question>) questionRepository.findByTagsContaining(tag)).stream().map(question -> new QuestionDTO(question, userService)).toList();
+        return ((List<Question>) questionRepository.findByTagsContaining(tag)).stream().map(QuestionDTO::new).toList();
     }
 
     public QuestionDTO retrieveQuestionById(Long questionId) {
         Optional<Question> questionGot = questionRepository.findById(questionId);
         if (questionGot.isPresent()) {
             Question question = questionGot.get();
-            return new QuestionDTO(question, userService);
+            return new QuestionDTO(question);
         } else {
             return null;
         }

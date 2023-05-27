@@ -1,9 +1,8 @@
 package com.rtx.queueunderflow.dto;
 
 import com.rtx.queueunderflow.entity.Answer;
-import com.rtx.queueunderflow.service.UserService;
+import com.rtx.queueunderflow.entity.Vote;
 
-import java.util.Date;
 import java.util.List;
 
 public class AnswerDTO {
@@ -17,9 +16,9 @@ public class AnswerDTO {
     private String content;
     private String date;
     private String picture;
-    private List<VoteDTO> votes;
+    private List<Vote> votes;
 
-    public AnswerDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, Long questionId, String questionTitle, String content, String date, String picture, List<VoteDTO> votes) {
+    public AnswerDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, Long questionId, String questionTitle, String content, String date, String picture, List<Vote> votes) {
         this.id = id;
         this.userId = userId;
         this.userFirstName = userFirstName;
@@ -33,7 +32,7 @@ public class AnswerDTO {
         this.votes = votes;
     }
 
-    public AnswerDTO(Answer answer, UserService userService) {
+    public AnswerDTO(Answer answer) {
         this.id = answer.getAnswerId();
         this.userId = answer.getUser().getUserId();
         this.userFirstName = answer.getUser().getFirstName();
@@ -44,7 +43,7 @@ public class AnswerDTO {
         this.content = answer.getContent();
         this.date = answer.getDate().toString();
         this.picture = answer.getPicture();
-        this.votes = answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList();
+        this.votes = answer.getVotes();
     }
 
     public Long getId() {
@@ -127,11 +126,11 @@ public class AnswerDTO {
         this.picture = picture;
     }
 
-    public List<VoteDTO> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(List<VoteDTO> votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 }

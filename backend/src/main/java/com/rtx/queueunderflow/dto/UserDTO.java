@@ -1,5 +1,7 @@
 package com.rtx.queueunderflow.dto;
 
+import com.rtx.queueunderflow.entity.User;
+
 import java.util.List;
 
 public class UserDTO {
@@ -21,6 +23,21 @@ public class UserDTO {
         this.banned = banned;
         this.questions = questions;
         this.answers = answers;
+    }
+
+    public UserDTO(User user) {
+        this.id = user.getUserId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.picture = user.getPicture();
+        this.moderator = user.isModerator();
+        this.banned = user.isBanned();
+        this.questions = user.getQuestions().stream().map(question -> {
+            QuestionDTO questionDTO = new QuestionDTO(question);
+            questionDTO.setAnswers(null);
+            return questionDTO;
+        }).toList();
+        this.answers = user.getAnswers().stream().map(AnswerDTO::new).toList();
     }
 
     public Long getId() {

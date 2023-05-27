@@ -1,5 +1,6 @@
-import {Avatar, Box, Button, Container, Link, ThemeProvider, Typography} from "@mui/material";
+import {Avatar, Box, Button, Container, IconButton, Link, ThemeProvider, Typography} from "@mui/material";
 import Image from "mui-image";
+import EditIcon from "@mui/icons-material/Edit";
 
 const DisplayAnswer = (props) => {
     return (
@@ -22,6 +23,11 @@ const DisplayAnswer = (props) => {
                         <Typography sx={{p: 1}}>{props.content}</Typography>
                         {props.picture !== '' && props.picture != null && <Image sx={{p: 1}} src={props.picture} alt={'unavailable'} height={'auto'} width={'auto'} fit={'scale-down'} duration={0}/>}
                         <Typography sx={{p: 1}}>Date: {props.date}</Typography>
+                        {props.token && ('' + props.userId) === props.token &&
+                            <IconButton aria-label='edit' sx={{width: '10%', alignSelf: 'left'}}>
+                                <EditIcon />
+                            </IconButton>
+                        }
                     </Box>
                 </Box>
             </ThemeProvider>

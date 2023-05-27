@@ -84,4 +84,4 @@ insert into answers (user_id, content, question_id) values
 insert into answer_votes values
 (1, 1, true), (1, 3, true);
 
-select * from list_of_tags
+select * from users

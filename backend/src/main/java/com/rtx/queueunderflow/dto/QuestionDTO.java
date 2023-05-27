@@ -1,9 +1,8 @@
 package com.rtx.queueunderflow.dto;
 
 import com.rtx.queueunderflow.entity.Question;
-import com.rtx.queueunderflow.service.UserService;
+import com.rtx.queueunderflow.entity.Vote;
 
-import java.util.Date;
 import java.util.List;
 
 public class QuestionDTO {
@@ -16,11 +15,11 @@ public class QuestionDTO {
     private String content;
     private String date;
     private String picture;
-    private List<VoteDTO> votes;
+    private List<Vote> votes;
     private List<AnswerDTO> answers;
     private List<String> tags;
 
-    public QuestionDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, String title, String content, String date, String picture, List<VoteDTO> votes, List<AnswerDTO> answers, List<String> tags) {
+    public QuestionDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, String title, String content, String date, String picture, List<Vote> votes, List<AnswerDTO> answers, List<String> tags) {
         this.id = id;
         this.userId = userId;
         this.userFirstName = userFirstName;
@@ -35,7 +34,7 @@ public class QuestionDTO {
         this.tags = tags;
     }
 
-    public QuestionDTO(Question question, UserService userService) {
+    public QuestionDTO(Question question) {
         this.id = question.getQuestionId();
         this.userId = question.getUser().getUserId();
         this.userFirstName = question.getUser().getFirstName();
@@ -45,25 +44,8 @@ public class QuestionDTO {
         this.content = question.getContent();
         this.date = question.getDate().toString();
         this.picture = question.getPicture();
-        this.votes = question.getVotes().stream().map(vote -> new VoteDTO(
-                userService.retrieveUserByID(vote.getUserId()).getFirstName(),
-                userService.retrieveUserByID(vote.getUserId()).getLastName(),
-                vote.isPositiveVote()
-        )).toList();
-        this.answers = question.getAnswers().stream().map(answer ->
-                        new AnswerDTO(
-                                answer.getAnswerId(),
-                                answer.getUser().getUserId(),
-                                answer.getUser().getFirstName(),
-                                answer.getUser().getLastName(),
-                                answer.getUser().getPicture(),
-                                answer.getQuestion().getQuestionId(),
-                                answer.getQuestion().getTitle(),
-                                answer.getContent(),
-                                answer.getDate().toString(),
-                                answer.getPicture(),
-                                answer.getVotes().stream().map(vote -> new VoteDTO(userService.retrieveUserByID(vote.getUserId()).getFirstName(), userService.retrieveUserByID(vote.getUserId()).getLastName(), vote.isPositiveVote())).toList()
-                        )).toList();
+        this.votes = question.getVotes();
+        this.answers = question.getAnswers().stream().map(AnswerDTO::new).toList();
         this.tags = question.getTags();
     }
 
@@ -139,11 +121,11 @@ public class QuestionDTO {
         this.picture = picture;
     }
 
-    public List<VoteDTO> getVotes() {
+    public List<Vote> getVotes() {
         return votes;
     }
 
-    public void setVotes(List<VoteDTO> votes) {
+    public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 

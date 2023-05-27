@@ -2,8 +2,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import DisplayAnswer from "../Display/DisplayAnswer";
+import DisplayBar from "../Display/DisplayBar";
 
-const Answer = () => {
+const Answer = (props) => {
     const [loaded, setLoaded] = useState(false)
     const [answer, setAnswer] = useState({
         userFirstName: "defaultUserFirstName",
@@ -16,8 +17,7 @@ const Answer = () => {
         picture: "none",
         votes: [
             {
-                userFirstName: "defaultUserFirstName",
-                userLastName: "defaultUserLastName",
+                userId: 0,
                 positiveVote: true
             }
         ]
@@ -35,14 +35,17 @@ const Answer = () => {
     }, [id])
 
     return loaded ? (
-        <DisplayAnswer userPicture={answer.userPicture}
-                       userFirstName={answer.userFirstName}
-                       userLastName={answer.userLastName}
-                       votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
-                       content={answer.content}
-                       picture={answer.picture}
-                       date={answer.date}
-        ></DisplayAnswer>
+        <>
+            <DisplayBar theme={props.theme} token={props.token}/>
+            <DisplayAnswer userPicture={answer.userPicture}
+                           userFirstName={answer.userFirstName}
+                           userLastName={answer.userLastName}
+                           votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
+                           content={answer.content}
+                           picture={answer.picture}
+                           date={answer.date}
+            ></DisplayAnswer>
+        </>
     ) : ( <div>Loading</div>)
 }
 

@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import DisplayAnswer from "../Display/DisplayAnswer";
 import {Container} from "@mui/material";
 import DisplayQuestion from "../Display/DisplayQuestion";
+import DisplayBar from "../Display/DisplayBar";
 
 const Question = (props) => {
     const [loaded, setLoaded] = useState(false)
@@ -34,31 +35,36 @@ const Question = (props) => {
     }, [id])
 
     return loaded ? (
-        <Container>
-            <DisplayQuestion theme={props.theme}
-                             title={question.title}
-                             content={question.content}
-                             picture={question.picture}
-                             tags={question.tags}
-                             date={question.date}
-                             vote={question.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
-                             userId={question.userId}
-                             userPicture={question.userPicture}
-                             userFirstName={question.userFirstName}
-                             userLastName={question.userLastName}
-            />
-            {question.answers.map(answer => (<DisplayAnswer key={answer.id}
-                                                            theme={props.theme}
-                                                            userId={answer.userId}
-                                                            userPicture={answer.userPicture}
-                                                            userFirstName={answer.userFirstName}
-                                                            userLastName={answer.userLastName}
-                                                            votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
-                                                            content={answer.content}
-                                                            picture={answer.picture}
-                                                            date={answer.date}
-            />))}
-        </Container>
+        <>
+            <DisplayBar theme={props.theme} token={props.token}/>
+            <Container>
+                <DisplayQuestion theme={props.theme}
+                                 title={question.title}
+                                 content={question.content}
+                                 picture={question.picture}
+                                 tags={question.tags}
+                                 date={question.date}
+                                 vote={question.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
+                                 userId={question.userId}
+                                 userPicture={question.userPicture}
+                                 userFirstName={question.userFirstName}
+                                 userLastName={question.userLastName}
+                                 token={props.token}
+                />
+                {question.answers.map(answer => (<DisplayAnswer key={answer.id}
+                                                                theme={props.theme}
+                                                                userId={answer.userId}
+                                                                userPicture={answer.userPicture}
+                                                                userFirstName={answer.userFirstName}
+                                                                userLastName={answer.userLastName}
+                                                                votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
+                                                                content={answer.content}
+                                                                picture={answer.picture}
+                                                                date={answer.date}
+                                                                token={props.token}
+                />))}
+            </Container>
+        </>
     ) : ( <div>Loading</div>)
 }
 

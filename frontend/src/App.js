@@ -5,6 +5,9 @@ import Question from "./Pages/Question";
 import Answer from "./Pages/Answer";
 import {createTheme} from "@mui/material/styles";
 import Tag from "./Pages/Tag";
+import Login from "./Pages/Login";
+import Cookies from "js-cookie";
+import Register from "./Pages/Register";
 
 const theme = createTheme({
     palette: {
@@ -24,14 +27,18 @@ const theme = createTheme({
 });
 
 const App = () => {
+    const token = Cookies.get('token')
+
     return (
         <Router>
             <Routes>
-                <Route path='/' element={<Home />}/>
-                <Route path='/users/:id' element={<User theme={theme}/>}/>
-                <Route path='/questions/:id' element={<Question theme={theme}/>}/>
-                <Route path='/answers/:id' element={<Answer theme={theme}/>}/>
-                <Route path='/tag/:tag' element={<Tag theme={theme}/>}/>
+                <Route path='/' element={<Home theme={theme} token={token}/>}/>
+                <Route path='/users/:id' element={<User theme={theme} token={token}/>}/>
+                <Route path='/questions/:id' element={<Question theme={theme} token={token}/>}/>
+                <Route path='/answers/:id' element={<Answer theme={theme} token={token}/>}/>
+                <Route path='/tag/:tag' element={<Tag theme={theme} token={token}/>}/>
+                <Route path='/login' element={<Login theme={theme} token={token}/>}/>
+                <Route path='/register' element={<Register theme={theme} token={token}/>}/>
             </Routes>
         </Router>
     )

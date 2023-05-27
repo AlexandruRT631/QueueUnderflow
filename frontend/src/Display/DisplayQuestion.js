@@ -1,4 +1,5 @@
-import {Avatar, Box, Button, Container, Link, ThemeProvider, Typography} from "@mui/material";
+import {Avatar, Box, Button, Container, IconButton, Link, ThemeProvider, Typography} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
 import Image from "mui-image";
 
 const DisplayQuestion = (props) => {
@@ -8,7 +9,9 @@ const DisplayQuestion = (props) => {
                 <Box sx={{display: 'flex', flexDirection: 'column', border: 10, borderColor: 'primary.dark', p: 2, bgcolor: 'secondary.light'}}>
                     <Typography variant={'h3'} sx={{p: 1}}>{props.title}</Typography>
                     <Typography sx={{p: 1}}>{props.content}</Typography>
-                    {props.picture !== '' && props.picture != null && <Image sx={{p: 1}} src={props.picture} alt={'unavailable'} height={'auto'} width={'auto'} fit={'scale-down'} duration={0}/>}
+                    {props.picture !== '' && props.picture != null &&
+                        <Image sx={{p: 1}} src={props.picture} alt={'unavailable'} height={'auto'} width={'auto'} fit={'scale-down'} duration={0}/>
+                    }
                     <Typography sx={{p: 1}}>
                         Tags: {props.tags
                             .map((tag) => (
@@ -32,10 +35,15 @@ const DisplayQuestion = (props) => {
                             <Typography sx={{alignSelf: 'center', color: 'primary.contrastText'}}>{props.userLastName}</Typography>
                         </Box>
                     </Box>
+                    {props.token && ('' + props.userId) === props.token &&
+                        <IconButton aria-label='edit' sx={{width: '10%', alignSelf: 'left'}}>
+                            <EditIcon />
+                        </IconButton>
+                    }
                 </Box>
             </ThemeProvider>
         </Container>
-    );
+    )
 }
 
 export default DisplayQuestion;

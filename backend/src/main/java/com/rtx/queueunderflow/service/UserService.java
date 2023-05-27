@@ -1,5 +1,6 @@
 package com.rtx.queueunderflow.service;
 
+import com.rtx.queueunderflow.dto.UserDTO;
 import com.rtx.queueunderflow.entity.User;
 import com.rtx.queueunderflow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,13 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public List<User> retrieveUsers() {
-        return (List<User>) userRepository.findAll();
+    public List<UserDTO> retrieveUsers() {
+        return ((List<User>) userRepository.findAll()).stream().map(UserDTO::new).toList();
     }
 
-    public User retrieveUserByID(Long userID) {
+    public UserDTO retrieveUserByID(Long userID) {
         Optional<User> user = userRepository.findById(userID);
-        if(user.isPresent()) {
-            return user.get();
-        } else {
-            return null;
-        }
+        return user.map(UserDTO::new).orElse(null);
     }
 
     public String deleteById(Long userID) {
@@ -38,5 +35,20 @@ public class UserService {
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User updateUser(User user) {
+        Optional<User> newUserGot = userRepository.findById(user.getUserId());
+        if (newUserGot.isPresent()) {
+            User newUser = newUserGot.get();
+            newUser.replaceFields(user);
+            return userRepository.save(newUser);
+        } else {
+            return null;
+        }
+    }
+
+    public User findByeMail(String email) {
+        return userRepository.findByeMail(email);
     }
 }

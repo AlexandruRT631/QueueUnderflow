@@ -3,6 +3,7 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {Container, Typography} from "@mui/material";
 import DisplayPost from "../Display/DisplayPost";
+import DisplayBar from "../Display/DisplayBar";
 
 const Question = (props) => {
     const [loaded, setLoaded] = useState(false)
@@ -20,20 +21,23 @@ const Question = (props) => {
     }, [tag])
 
     return loaded ? (
-        <Container>
-            <Typography variant={'h3'} sx={{p: 1}}>Questions with tag: {tag}</Typography>
-            {questions.map(question => (<DisplayPost
-                key={`q${question.id}`}
-                id={question.id}
-                theme={props.theme}
-                borderColor={`primary.dark`}
-                bgcolor={`secondary.light`}
-                title={question.title}
-                content={question.content}
-                href={`/questions/${question.id}`}
-            />))}
-        </Container>
-    ) : ( <div>Loading</div>)
+        <>
+            <DisplayBar theme={props.theme} token={props.token}/>
+            <Container>
+                <Typography variant={'h3'} sx={{p: 1}}>Questions with tag: {tag}</Typography>
+                {questions.map(question => (<DisplayPost
+                    key={`q${question.id}`}
+                    id={question.id}
+                    theme={props.theme}
+                    borderColor={`primary.dark`}
+                    bgcolor={`secondary.light`}
+                    title={question.title}
+                    content={question.content}
+                    href={`/questions/${question.id}`}
+                />))}
+            </Container>
+        </>
+    ) : (<div>Loading</div>)
 }
 
 export default Question
