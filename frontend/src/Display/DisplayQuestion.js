@@ -21,12 +21,13 @@ const DisplayQuestion = (props) => {
     const [success, setSuccess] = useState("");
 
     const onClickUpdate = () => {
-        if (formData.title !== null && formData.content !== null) {
+        if (formData.title !== null && formData.content !== null && formData.title !== "" && formData.content !== "") {
             //console.log(formData);
             axios.put('http://localhost:8080/questions/updateQuestion', formData)
                 .then((res) => {
                     if (res.status === 200) {
                         setSuccess("Successfully updated question");
+                        setError("")
                         setIsEditing(false);
                     }
                     //console.log(res.data);
@@ -36,6 +37,7 @@ const DisplayQuestion = (props) => {
                 });
         } else {
             setError("Title and Content are required");
+            setSuccess("")
         }
     }
 
@@ -44,6 +46,7 @@ const DisplayQuestion = (props) => {
             .then((res) => {
                 if (res.status === 200) {
                     setSuccess("Successfully deleted question");
+                    setError("");
                     setTimeout(() => {navigate('/')}, 5000);
                 }
                 //console.log(res.data);

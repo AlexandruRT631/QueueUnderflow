@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from "axios";
 import Cookies from "js-cookie";
-import {Box, Button, Container, Link, TextField, ThemeProvider, Typography} from "@mui/material";
+import {Box, Button, Container, TextField, ThemeProvider, Typography} from "@mui/material";
 import DisplayBar from "../Display/DisplayBar";
 import {useNavigate} from "react-router-dom";
 
@@ -36,7 +36,7 @@ const Login = (props) => {
     return (
         <>
             <DisplayBar theme={props.theme} token={props.token}/>
-            <Container sx={{p: 1, textDecoration: 'none'}} component={Link} href={props.href}>
+            <Container sx={{p: 1, textDecoration: 'none'}}>
                 <ThemeProvider theme={props.theme}>
                     <Box sx={{
                         display: 'flex',

@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import axios from "axios";
 import DisplayBar from "../Display/DisplayBar";
-import {Box, Button, Container, Link, TextField, ThemeProvider, Typography} from "@mui/material";
+import {Box, Button, Container, TextField, ThemeProvider, Typography} from "@mui/material";
 
 const NewQuestion = (props) => {
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ const NewQuestion = (props) => {
     const [error, setError] = useState("");
 
     const onClick = () => {
-        if (formData.title !== null && formData.content !== null) {
+        if (formData.title !== null && formData.content !== null && formData.title !== "" && formData.content !== "") {
             axios.post('http://localhost:8080/questions/insertQuestion', {...formData, userId: props.token, tags: toTagsList(formData.tags)})
                 .then((res) => {
                     if (res.status === 200) {
@@ -49,7 +49,7 @@ const NewQuestion = (props) => {
     return (
         <>
             <DisplayBar theme={props.theme} token={props.token}/>
-            <Container sx={{p: 1, textDecoration: 'none'}} component={Link} href={props.href}>
+            <Container sx={{p: 1, textDecoration: 'none'}}>
                 <ThemeProvider theme={props.theme}>
                     <Box sx={{
                         display: 'flex',

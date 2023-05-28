@@ -5,6 +5,7 @@ import DisplayAnswer from "../Display/DisplayAnswer";
 import {Container, Typography, Box, ThemeProvider} from "@mui/material";
 import DisplayQuestion from "../Display/DisplayQuestion";
 import DisplayBar from "../Display/DisplayBar";
+import DisplayNewAnswer from "../Display/DisplayNewAnswer";
 
 const Question = (props) => {
     const [loaded, setLoaded] = useState(false)
@@ -58,7 +59,15 @@ const Question = (props) => {
                                          userLastName={question.userLastName}
                                          token={props.token}
                         />
+                        {props.token &&
+                        <DisplayNewAnswer theme={props.theme}
+                                          questionId={question.id}
+                                          token={props.token}
+                                          />
+                        }
                         {question.answers.map(answer => (<DisplayAnswer key={answer.id}
+                                                                        answerId={answer.id}
+                                                                        questionId={question.id}
                                                                         theme={props.theme}
                                                                         userId={answer.userId}
                                                                         userPicture={answer.userPicture}

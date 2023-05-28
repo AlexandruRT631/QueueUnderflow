@@ -17,8 +17,8 @@ public class AnswerController {
 
     @PostMapping("/insertAnswer")
     @ResponseBody
-    public Answer insertAnswer(@RequestBody Answer answer) {
-        return answerService.saveAnswer(answer);
+    public Answer insertAnswer(@RequestBody AnswerDTO answerDTO) {
+        return answerService.saveAnswer(answerDTO);
     }
 
     @GetMapping("/getAll")
