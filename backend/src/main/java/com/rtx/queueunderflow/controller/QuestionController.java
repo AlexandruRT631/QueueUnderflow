@@ -17,20 +17,26 @@ public class QuestionController {
 
     @PostMapping("/insertQuestion")
     @ResponseBody
-    public Question insertQuestion(@RequestBody Question question) {
-        return questionService.saveQuestion(question);
+    public Question insertQuestion(@RequestBody QuestionDTO questionDTO) {
+        return questionService.saveQuestion(questionDTO);
     }
 
     @GetMapping("/getAll")
     @ResponseBody
-    public List<QuestionDTO> retrieveQuestions() {
-        return questionService.retrieveQuestions();
+    public List<QuestionDTO> retrieveQuestions(@RequestParam int page) {
+        return questionService.retrieveQuestions(page);
     }
 
     @GetMapping("/tag/{tag}")
     @ResponseBody
-    public List<QuestionDTO> retrieveQuestionsByTag(@PathVariable String tag) {
-        return questionService.retrieveQuestionsByTag(tag);
+    public List<QuestionDTO> retrieveQuestionsByTag(@PathVariable String tag, @RequestParam int page) {
+        return questionService.retrieveQuestionsByTag(tag, page);
+    }
+
+    @GetMapping("/search/{title}")
+    @ResponseBody
+    public List<QuestionDTO> retrieveQuestionsByTitle(@PathVariable String title, @RequestParam int page) {
+        return questionService.retrieveQuestionsByTitle(title, page);
     }
 
     @GetMapping("/getById/{question_id}")

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends CrudRepository<Question, Long> {
     List<Question> findByTagsContaining(String tag);
+    List<Question> findByTitleContainingIgnoreCase(String title);
 }

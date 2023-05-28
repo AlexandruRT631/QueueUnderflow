@@ -1,33 +1,33 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useParams} from "react-router-dom";
+import axios from "axios";
+import DisplayBar from "../Display/DisplayBar";
 import {Container, Typography} from "@mui/material";
 import DisplayPost from "../Display/DisplayPost";
-import DisplayBar from "../Display/DisplayBar";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const Question = (props) => {
+const Search = (props) => {
     const [loaded, setLoaded] = useState(false)
     const [questions, setQuestions] = useState([])
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
-    const {tag} = useParams()
+    const {search} = useParams()
 
     const fetchData = () => {
-        axios.get(`http://localhost:8080/questions/tag/${tag}?page=${page}`)
+        axios.get(`http://localhost:8080/questions/search/${search}?page=${page}`)
             .then(res => {
                 setQuestions([...questions, ...res.data])
                 if (res.data.length < 10) {
                     setHasMore(false)
                 }
                 setPage(page + 1)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(err => console.log(err))
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/questions/tag/${tag}?page=${page}`)
+        axios.get(`http://localhost:8080/questions/search/${search}?page=${page}`)
             .then(res => {
                 setQuestions([...questions, ...res.data])
                 if (res.data.length < 10) {
@@ -44,7 +44,7 @@ const Question = (props) => {
         <>
             <DisplayBar theme={props.theme} token={props.token}/>
             <Container>
-                <Typography variant={'h3'} sx={{p: 1}}>Questions with tag: {tag}</Typography>
+                <Typography variant={'h3'} sx={{p: 1}}>Questions with Title: {search}</Typography>
                 <InfiniteScroll
                     dataLength={questions.length}
                     next={fetchData}
@@ -69,4 +69,4 @@ const Question = (props) => {
     ) : (<div>Loading</div>)
 }
 
-export default Question
+export default Search

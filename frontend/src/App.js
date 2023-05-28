@@ -8,6 +8,8 @@ import Tag from "./Pages/Tag";
 import Login from "./Pages/Login";
 import Cookies from "js-cookie";
 import Register from "./Pages/Register";
+import NewQuestion from "./Pages/NewQuestion";
+import Search from "./Pages/Search";
 
 const theme = createTheme({
     palette: {
@@ -39,6 +41,8 @@ const App = () => {
                 <Route path='/tag/:tag' element={<Tag theme={theme} token={token}/>}/>
                 <Route path='/login' element={<Login theme={theme} token={token}/>}/>
                 <Route path='/register' element={<Register theme={theme} token={token}/>}/>
+                <Route path='/newQuestion' element={<NewQuestion theme={theme} token={token}/>}/>
+                <Route path='/search/:search' element={<Search theme={theme} token={token}/>}/>
             </Routes>
         </Router>
     )

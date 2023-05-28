@@ -150,9 +150,6 @@ public class Question {
         if (question.getContent() != null) {
             this.content = question.getContent();
         }
-        if (question.getDate() != null) {
-            this.date = question.getDate();
-        }
         if (question.getPicture() != null) {
             this.picture = question.getPicture();
         }

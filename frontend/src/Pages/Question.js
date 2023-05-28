@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import DisplayAnswer from "../Display/DisplayAnswer";
-import {Container} from "@mui/material";
+import {Container, Typography, Box, ThemeProvider} from "@mui/material";
 import DisplayQuestion from "../Display/DisplayQuestion";
 import DisplayBar from "../Display/DisplayBar";
 
@@ -27,45 +27,72 @@ const Question = (props) => {
     useEffect(() => {
         axios.get(`http://localhost:8080/questions/getById/${id}`)
             .then(res => {
-                setQuestion(res.data)
+                if (res.data) {
+                    setQuestion(res.data)
+                } else {
+                    setQuestion(null)
+                }
                 setLoaded(true)
-                // console.log(res.data)
+                //console.log(question)
             })
             .catch(err => console.log(err))
-    }, [id])
+    })
 
     return loaded ? (
         <>
             <DisplayBar theme={props.theme} token={props.token}/>
-            <Container>
-                <DisplayQuestion theme={props.theme}
-                                 title={question.title}
-                                 content={question.content}
-                                 picture={question.picture}
-                                 tags={question.tags}
-                                 date={question.date}
-                                 vote={question.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
-                                 userId={question.userId}
-                                 userPicture={question.userPicture}
-                                 userFirstName={question.userFirstName}
-                                 userLastName={question.userLastName}
-                                 token={props.token}
-                />
-                {question.answers.map(answer => (<DisplayAnswer key={answer.id}
-                                                                theme={props.theme}
-                                                                userId={answer.userId}
-                                                                userPicture={answer.userPicture}
-                                                                userFirstName={answer.userFirstName}
-                                                                userLastName={answer.userLastName}
-                                                                votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
-                                                                content={answer.content}
-                                                                picture={answer.picture}
-                                                                date={answer.date}
-                                                                token={props.token}
-                />))}
+            <Container sx={{p: 1}}>
+                {question ? (
+                    <>
+                        <DisplayQuestion questionId={question.id}
+                                         theme={props.theme}
+                                         title={question.title}
+                                         content={question.content}
+                                         picture={question.picture}
+                                         tags={question.tags}
+                                         date={question.date}
+                                         vote={question.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
+                                         userId={question.userId}
+                                         userPicture={question.userPicture}
+                                         userFirstName={question.userFirstName}
+                                         userLastName={question.userLastName}
+                                         token={props.token}
+                        />
+                        {question.answers.map(answer => (<DisplayAnswer key={answer.id}
+                                                                        theme={props.theme}
+                                                                        userId={answer.userId}
+                                                                        userPicture={answer.userPicture}
+                                                                        userFirstName={answer.userFirstName}
+                                                                        userLastName={answer.userLastName}
+                                                                        votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
+                                                                        content={answer.content}
+                                                                        picture={answer.picture}
+                                                                        date={answer.date}
+                                                                        token={props.token}
+                        />))}</>
+                ) : (
+                    <ThemeProvider theme={props.theme}>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            border: 10,
+                            borderColor: 'primary.dark',
+                            p: 2,
+                            bgcolor: 'secondary.light'
+                        }}>
+                            <Typography variant={'h4'} sx={{
+                                p: 1,
+                                color: 'primary.contrastText',
+                                alignSelf: 'center'
+                            }}>
+                                Question not found
+                            </Typography>
+                        </Box>
+                    </ThemeProvider>
+                )}
             </Container>
         </>
-    ) : ( <div>Loading</div>)
+    ) : (<div>Loading</div>)
 }
 
 export default Question
