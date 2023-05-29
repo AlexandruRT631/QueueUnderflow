@@ -52,6 +52,7 @@ const Question = (props) => {
                                          picture={question.picture}
                                          tags={question.tags}
                                          date={question.date}
+                                         votes={question.votes}
                                          vote={question.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
                                          userId={question.userId}
                                          userPicture={question.userPicture}
@@ -73,7 +74,8 @@ const Question = (props) => {
                                                                         userPicture={answer.userPicture}
                                                                         userFirstName={answer.userFirstName}
                                                                         userLastName={answer.userLastName}
-                                                                        votes={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
+                                                                        votes={answer.votes}
+                                                                        vote={answer.votes.map(value => value.positiveVote).reduce((acc, cur) => acc + (cur ? 1 : -1), 0)}
                                                                         content={answer.content}
                                                                         picture={answer.picture}
                                                                         date={answer.date}

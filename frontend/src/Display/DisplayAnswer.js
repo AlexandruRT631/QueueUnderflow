@@ -12,6 +12,7 @@ const DisplayAnswer = (props) => {
         questionId: props.questionId,
         content: props.content,
         picture: props.picture,
+        votes: props.votes,
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -51,6 +52,75 @@ const DisplayAnswer = (props) => {
             });
     }
 
+    const getVote = () => {
+        if (props.token == null) {
+            return null;
+        }
+        const vote = props.votes.find(value => value.userId === parseInt(props.token));
+        //console.log(vote)
+        return vote ? vote.positiveVote : null;
+    }
+
+    const onClickUpvote = () => {
+        if (props.userId === parseInt(props.token)) {
+            return;
+        }
+        //console.log(formData);
+        axios.put('http://localhost:8080/answers/updateAnswer', ((getVote() !== null && getVote() === true) ?
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token))
+            }) :
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token)).concat({
+                    userId: parseInt(props.token),
+                    positiveVote: true
+                })
+
+            })))
+            .then((res) => {
+                if (res.status === 200) {
+                    //console.log("Successful upvote")
+                    setFormData({...formData, votes: res.data.votes})
+                }
+                //console.log(res.data);
+            })
+            .catch((error) => {
+                console.log("An error occurred:", error);
+            });
+    }
+
+    const onClickDownvote = () => {
+        if (props.userId === parseInt(props.token)) {
+            return;
+        }
+        // console.log(formData);
+        axios.put('http://localhost:8080/answers/updateAnswer', ((getVote() !== null && getVote() === false) ?
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token))
+            }) :
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token)).concat({
+                    userId: parseInt(props.token),
+                    positiveVote: false
+                })
+
+            })))
+            .then((res) => {
+                if (res.status === 200) {
+                    //console.log("Successful downvote")
+                    setFormData({...formData, votes: res.data.votes})
+                }
+                //console.log(res.data);
+            })
+            .catch((error) => {
+                console.log("An error occurred:", error);
+            });
+    }
+
     return (
         <Container sx={{p: 1}}>
             <ThemeProvider theme={props.theme}>
@@ -76,15 +146,24 @@ const DisplayAnswer = (props) => {
                                 color: 'primary.contrastText'
                             }}>{props.userLastName}</Typography>
                         </Box>
-                        <Button sx={{width: '20%', alignSelf: 'center'}}>
+                        <Button sx={{width: '20%', alignSelf: 'center'}} onClick={onClickUpvote}>
                             <Image
-                                src={'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconInactive_n5ydt0uuj6x11.png'}
+                                src={(getVote() !== null && getVote() === true) ? (
+                                    'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconActive_lritbcc3d6x11.png'
+                                ) : (
+                                    'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconInactive_n5ydt0uuj6x11.png'
+                                )}
                                 duration={0}/>
                         </Button>
-                        <Typography>Vote: {props.votes}</Typography>
-                        <Button sx={{width: '20%', alignSelf: 'center'}}><Image
-                            src={'https://styles.redditmedia.com/t5_2qnty/styles/postDownvoteIconInactive_cnbj1c0wj6x11.png'}
-                            duration={0}/></Button>
+                        <Typography>Vote: {props.vote}</Typography>
+                        <Button sx={{width: '20%', alignSelf: 'center'}} onClick={onClickDownvote}><Image
+                            src={(getVote() !== null && getVote() === false) ? (
+                                'https://styles.redditmedia.com/t5_2qnty/styles/postDownvoteIconActive_mqbieia4d6x11.png'
+                            ) : (
+                                'https://styles.redditmedia.com/t5_2qnty/styles/postDownvoteIconInactive_cnbj1c0wj6x11.png'
+                            )}
+                            duration={0}/>
+                        </Button>
                     </Box>
                     <Box sx={{width: '80%', bgcolor: 'secondary.main', p: 2}}>
                         {isEditing ? (

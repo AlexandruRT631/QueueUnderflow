@@ -15,7 +15,8 @@ const DisplayQuestion = (props) => {
         title: props.title,
         content: props.content,
         picture: props.picture,
-        tags: props.tags
+        tags: props.tags,
+        votes: props.votes,
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -47,7 +48,9 @@ const DisplayQuestion = (props) => {
                 if (res.status === 200) {
                     setSuccess("Successfully deleted question");
                     setError("");
-                    setTimeout(() => {navigate('/')}, 5000);
+                    setTimeout(() => {
+                        navigate('/')
+                    }, 5000);
                 }
                 //console.log(res.data);
             })
@@ -62,6 +65,75 @@ const DisplayQuestion = (props) => {
         }
 
         return str.split(',').map(item => item.trim());
+    }
+
+    const getVote = () => {
+        if (props.token == null) {
+            return null;
+        }
+        const vote = formData.votes.find(value => value.userId === parseInt(props.token));
+        //console.log(vote)
+        return vote ? vote.positiveVote : null;
+    }
+
+    const onClickUpvote = () => {
+        if (props.userId === parseInt(props.token)) {
+            return;
+        }
+        //console.log(formData);
+        axios.put('http://localhost:8080/questions/updateQuestion', ((getVote() !== null && getVote() === true) ?
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token))
+            }) :
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token)).concat({
+                    userId: parseInt(props.token),
+                    positiveVote: true
+                })
+
+            })))
+            .then((res) => {
+                if (res.status === 200) {
+                    //console.log("Successful upvote")
+                    setFormData({...formData, votes: res.data.votes})
+                }
+                //console.log(res.data);
+            })
+            .catch((error) => {
+                console.log("An error occurred:", error);
+            });
+    }
+
+    const onClickDownvote = () => {
+        if (props.userId === parseInt(props.token)) {
+            return;
+        }
+        // console.log(formData);
+        axios.put('http://localhost:8080/questions/updateQuestion', ((getVote() !== null && getVote() === false) ?
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token))
+            }) :
+            ({
+                ...formData,
+                votes: formData.votes.filter(value => value.userId !== parseInt(props.token)).concat({
+                    userId: parseInt(props.token),
+                    positiveVote: false
+                })
+
+            })))
+            .then((res) => {
+                if (res.status === 200) {
+                    //console.log("Successful downvote")
+                    setFormData({...formData, votes: res.data.votes})
+                }
+                //console.log(res.data);
+            })
+            .catch((error) => {
+                console.log("An error occurred:", error);
+            });
     }
 
     return (
@@ -121,15 +193,24 @@ const DisplayQuestion = (props) => {
                     <Typography sx={{p: 1}}>Date: {props.date}</Typography>
                     <Box sx={{display: 'flex', flexDirection: 'row'}}>
                         <Box sx={{width: '20%'}}>
-                            <Button sx={{width: '20%', alignSelf: 'center'}}>
+                            <Button sx={{width: '20%', alignSelf: 'center'}} onClick={onClickUpvote}>
                                 <Image
-                                    src={'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconInactive_n5ydt0uuj6x11.png'}
+                                    src={(getVote() !== null && getVote() === true) ? (
+                                        'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconActive_lritbcc3d6x11.png'
+                                    ) : (
+                                        'https://styles.redditmedia.com/t5_2qnty/styles/postUpvoteIconInactive_n5ydt0uuj6x11.png'
+                                    )}
                                     duration={0}/>
                             </Button>
                             <Typography>Vote: {props.vote}</Typography>
-                            <Button sx={{width: '20%', alignSelf: 'center'}}><Image
-                                src={'https://styles.redditmedia.com/t5_2qnty/styles/postDownvoteIconInactive_cnbj1c0wj6x11.png'}
-                                duration={0}/></Button>
+                            <Button sx={{width: '20%', alignSelf: 'center'}} onClick={onClickDownvote}><Image
+                                src={(getVote() !== null && getVote() === false) ? (
+                                    'https://styles.redditmedia.com/t5_2qnty/styles/postDownvoteIconActive_mqbieia4d6x11.png'
+                                ) : (
+                                    'https://styles.redditmedia.com/t5_2qnty/styles/postDownvoteIconInactive_cnbj1c0wj6x11.png'
+                                )}
+                                duration={0}/>
+                            </Button>
                         </Box>
                         <Box sx={{display: 'flex', flexDirection: 'column', textDecoration: 'none', width: '80%'}}
                              component={Link} href={`/users/${props.userId}`}>
@@ -152,7 +233,8 @@ const DisplayQuestion = (props) => {
                             }}>
                                 <EditIcon/>
                             </IconButton>
-                            <IconButton aria-label='delete' sx={{width: '10%', alignSelf: 'left'}} onClick={onClickDelete}>
+                            <IconButton aria-label='delete' sx={{width: '10%', alignSelf: 'left'}}
+                                        onClick={onClickDelete}>
                                 <DeleteIcon/>
                             </IconButton>
                         </Box>

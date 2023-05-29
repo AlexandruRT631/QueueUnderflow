@@ -3,6 +3,7 @@ package com.rtx.queueunderflow.dto;
 import com.rtx.queueunderflow.entity.Question;
 import com.rtx.queueunderflow.entity.Vote;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class QuestionDTO {
@@ -30,7 +31,7 @@ public class QuestionDTO {
         this.date = date;
         this.picture = picture;
         this.votes = votes;
-        this.answers = answers;
+        this.answers = answers.stream().sorted(Comparator.comparingInt(answer -> getVoteScore(((AnswerDTO)answer).getVotes())).reversed()).toList();
         this.tags = tags;
     }
 
@@ -45,7 +46,7 @@ public class QuestionDTO {
         this.date = question.getDate().toString();
         this.picture = question.getPicture();
         this.votes = question.getVotes();
-        this.answers = question.getAnswers().stream().map(AnswerDTO::new).toList();
+        this.answers = question.getAnswers().stream().map(AnswerDTO::new).sorted(Comparator.comparingInt(answer -> getVoteScore(((AnswerDTO)answer).getVotes())).reversed()).toList();
         this.tags = question.getTags();
     }
 
@@ -143,5 +144,13 @@ public class QuestionDTO {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    private int getVoteScore(List<Vote> votes) {
+        int score = 0;
+        for (Vote vote : votes) {
+            score += vote.isPositiveVote() ? 1 : -1;
+        }
+        return score;
     }
 }
