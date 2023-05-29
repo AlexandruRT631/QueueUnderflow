@@ -30,7 +30,10 @@ const DisplayBar = (props) => {
                                    onChange={(e) => setSearch(e.target.value)}>
                             {search}
                         </TextField>
-                        <Button color="inherit" onClick={() => navigate(`/search/${search}`)}>Search</Button>
+                        <Button color="inherit" onClick={() => {
+                            navigate(`/search/${search}`)
+                            window.location.reload()
+                        }}>Search</Button>
                     </Toolbar>
                 </AppBar>
             </Box>

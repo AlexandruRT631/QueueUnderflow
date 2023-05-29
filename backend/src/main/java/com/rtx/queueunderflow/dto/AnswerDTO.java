@@ -1,6 +1,8 @@
 package com.rtx.queueunderflow.dto;
 
 import com.rtx.queueunderflow.entity.Answer;
+import com.rtx.queueunderflow.entity.Question;
+import com.rtx.queueunderflow.entity.User;
 import com.rtx.queueunderflow.entity.Vote;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class AnswerDTO {
     private String date;
     private String picture;
     private List<Vote> votes;
+    private Double userScore;
 
     public AnswerDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, Long questionId, String questionTitle, String content, String date, String picture, List<Vote> votes) {
         this.id = id;
@@ -44,6 +47,7 @@ public class AnswerDTO {
         this.date = answer.getDate().toString();
         this.picture = answer.getPicture();
         this.votes = answer.getVotes();
+        this.userScore = computeUserScore(answer.getUser());
     }
 
     public Long getId() {
@@ -132,5 +136,29 @@ public class AnswerDTO {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
+    }
+
+    public Double getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(Double userScore) {
+        this.userScore = userScore;
+    }
+
+    private Double computeUserScore(User user) {
+        Double score = 0.0;
+        for (Question question : user.getQuestions()) {
+            for(Vote vote : question.getVotes()) {
+                score += vote.isPositiveVote() ? 2.5 : -1.5;
+            }
+        }
+        for (Answer answer : user.getAnswers()) {
+            for(Vote vote : answer.getVotes()) {
+                score += vote.isPositiveVote() ? 5 : -2.5;
+            }
+        }
+        score -= (double)(user.getAnswerVotes().stream().filter(vote -> !vote.isPositiveVote()).count()) * 1.5;
+        return score;
     }
 }

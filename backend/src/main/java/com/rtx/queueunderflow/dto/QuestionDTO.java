@@ -1,6 +1,8 @@
 package com.rtx.queueunderflow.dto;
 
+import com.rtx.queueunderflow.entity.Answer;
 import com.rtx.queueunderflow.entity.Question;
+import com.rtx.queueunderflow.entity.User;
 import com.rtx.queueunderflow.entity.Vote;
 
 import java.util.Comparator;
@@ -19,6 +21,7 @@ public class QuestionDTO {
     private List<Vote> votes;
     private List<AnswerDTO> answers;
     private List<String> tags;
+    private Double userScore;
 
     public QuestionDTO(Long id, Long userId, String userFirstName, String userLastName, String userPicture, String title, String content, String date, String picture, List<Vote> votes, List<AnswerDTO> answers, List<String> tags) {
         this.id = id;
@@ -48,6 +51,7 @@ public class QuestionDTO {
         this.votes = question.getVotes();
         this.answers = question.getAnswers().stream().map(AnswerDTO::new).sorted(Comparator.comparingInt(answer -> getVoteScore(((AnswerDTO)answer).getVotes())).reversed()).toList();
         this.tags = question.getTags();
+        this.userScore = computeUserScore(question.getUser());
     }
 
     public Long getId() {
@@ -151,6 +155,30 @@ public class QuestionDTO {
         for (Vote vote : votes) {
             score += vote.isPositiveVote() ? 1 : -1;
         }
+        return score;
+    }
+
+    public Double getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(Double userScore) {
+        this.userScore = userScore;
+    }
+
+    private Double computeUserScore(User user) {
+        Double score = 0.0;
+        for (Question question : user.getQuestions()) {
+            for(Vote vote : question.getVotes()) {
+                score += vote.isPositiveVote() ? 2.5 : -1.5;
+            }
+        }
+        for (Answer answer : user.getAnswers()) {
+            for(Vote vote : answer.getVotes()) {
+                score += vote.isPositiveVote() ? 5 : -2.5;
+            }
+        }
+        score -= (double)(user.getAnswerVotes().stream().filter(vote -> !vote.isPositiveVote()).count()) * 1.5;
         return score;
     }
 }

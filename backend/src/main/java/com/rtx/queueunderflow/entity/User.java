@@ -42,6 +42,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AnswerVotes> answerVotes;
+
     public User() {
     }
 
@@ -143,6 +146,14 @@ public class User {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public List<AnswerVotes> getAnswerVotes() {
+        return answerVotes;
+    }
+
+    public void setAnswerVotes(List<AnswerVotes> answerVotes) {
+        this.answerVotes = answerVotes;
     }
 
     public void replaceFields(User user) {

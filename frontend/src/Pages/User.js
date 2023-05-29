@@ -16,6 +16,7 @@ const User = (props) => {
         banned: false,
         questions: [],
         answers: [],
+        userScore: 0,
     })
     const {id} = useParams()
 
@@ -61,8 +62,9 @@ const User = (props) => {
                                     alignSelf: 'center',
                                     color: 'primary.contrastText'
                                 }}>{user.lastName}</Typography>
-                                <Typography sx={{alignSelf: 'center', color: 'primary.contrastText', p: 2}}>Score:
-                                    0</Typography>
+                                <Typography sx={{alignSelf: 'center', color: 'primary.contrastText', p: 2}}>
+                                    Score: {user.userScore}
+                                </Typography>
                                 {user.moderator && <Typography
                                     sx={{alignSelf: 'center', color: 'primary.main'}}>Moderator</Typography>}
                                 {user.banned &&

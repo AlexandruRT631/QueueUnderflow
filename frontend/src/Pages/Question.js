@@ -59,6 +59,7 @@ const Question = (props) => {
                                          userFirstName={question.userFirstName}
                                          userLastName={question.userLastName}
                                          token={props.token}
+                                         userScore={question.userScore}
                         />
                         {props.token &&
                         <DisplayNewAnswer theme={props.theme}
@@ -80,6 +81,7 @@ const Question = (props) => {
                                                                         picture={answer.picture}
                                                                         date={answer.date}
                                                                         token={props.token}
+                                                                        userScore={answer.userScore}
                         />))}</>
                 ) : (
                     <ThemeProvider theme={props.theme}>

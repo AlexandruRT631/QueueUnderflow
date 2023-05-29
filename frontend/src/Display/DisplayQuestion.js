@@ -77,7 +77,7 @@ const DisplayQuestion = (props) => {
     }
 
     const onClickUpvote = () => {
-        if (props.userId === parseInt(props.token)) {
+        if (props.token === undefined || props.userId === parseInt(props.token)) {
             return;
         }
         //console.log(formData);
@@ -107,9 +107,10 @@ const DisplayQuestion = (props) => {
     }
 
     const onClickDownvote = () => {
-        if (props.userId === parseInt(props.token)) {
+        if (props.token === undefined || props.userId === parseInt(props.token)) {
             return;
         }
+        //console.log(props.token)
         // console.log(formData);
         axios.put('http://localhost:8080/questions/updateQuestion', ((getVote() !== null && getVote() === false) ?
             ({
@@ -224,6 +225,10 @@ const DisplayQuestion = (props) => {
                                 alignSelf: 'center',
                                 color: 'primary.contrastText'
                             }}>{props.userLastName}</Typography>
+                            <Typography sx={{
+                                alignSelf: 'center',
+                                color: 'primary.contrastText'
+                            }}>User score: {props.userScore}</Typography>
                         </Box>
                     </Box>
                     {props.token && ('' + props.userId) === props.token && !isEditing &&
