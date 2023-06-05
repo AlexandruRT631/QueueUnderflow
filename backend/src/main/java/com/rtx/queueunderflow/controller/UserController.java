@@ -45,6 +45,12 @@ public class UserController {
         return userService.updateUser(user);
     }
 
+    @PutMapping("/banUserById/{user_id}")
+    @ResponseBody
+    public UserDTO banUserById(@PathVariable Long user_id) {
+        return userService.banUserById(user_id);
+    }
+
     @DeleteMapping("/deleteById/{user_id}")
     @ResponseBody
     public String deleteById(@PathVariable Long user_id) {

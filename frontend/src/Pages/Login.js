@@ -14,9 +14,10 @@ const Login = (props) => {
     const onClick = () => {
         axios.post('http://localhost:8080/login', formData)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 200) {
-                    Cookies.set('token', res.data, {expires: 31});
+                    Cookies.set('token', res.data.id, {expires: 31});
+                    Cookies.set('moderator', res.data.moderator, {expires: 31});
                     navigate('/');
                     window.location.reload()
                 }
@@ -25,7 +26,11 @@ const Login = (props) => {
                 if (error.response && error.response.status === 401) {
                     console.log("Unauthorized: Incorrect email or password");
                     setError("Incorrect email or password");
-                } else {
+                } else if (error.response && error.response.status === 403) {
+                    console.log("Forbidden: Account banned");
+                    setError("Account banned");
+                }
+                else {
                     console.log("An error occurred:", error);
                 }
                 Cookies.remove("token")

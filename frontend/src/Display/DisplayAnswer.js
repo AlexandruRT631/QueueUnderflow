@@ -197,7 +197,7 @@ const DisplayAnswer = (props) => {
                             </>
                         )}
                         <Typography sx={{p: 1}}>Date: {props.date}</Typography>
-                        {props.token && ('' + props.userId) === props.token && !isEditing &&
+                        {props.token && (('' + props.userId) === props.token || props.moderator === 'true') && !isEditing &&
                             <Box sx={{display: 'flex', flexDirection: 'row'}}>
                                 <IconButton aria-label='edit' sx={{width: '10%', alignSelf: 'left'}} onClick={() => {
                                     setIsEditing(true)

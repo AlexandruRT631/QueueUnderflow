@@ -11,6 +11,7 @@ const DisplayBar = (props) => {
     const navigate = useNavigate();
     const logout = () => {
         Cookies.remove('token')
+        Cookies.remove('moderator')
         window.location.reload()
     }
     const [search, setSearch] = React.useState('')

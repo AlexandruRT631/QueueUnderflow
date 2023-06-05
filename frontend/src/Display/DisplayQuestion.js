@@ -231,7 +231,7 @@ const DisplayQuestion = (props) => {
                             }}>User score: {props.userScore}</Typography>
                         </Box>
                     </Box>
-                    {props.token && ('' + props.userId) === props.token && !isEditing &&
+                    {props.token && (('' + props.userId) === props.token || props.moderator === 'true') && !isEditing &&
                         <Box sx={{display: 'flex', flexDirection: 'row'}}>
                             <IconButton aria-label='edit' sx={{width: '10%', alignSelf: 'left'}} onClick={() => {
                                 setIsEditing(true)

@@ -30,13 +30,14 @@ const theme = createTheme({
 
 const App = () => {
     const token = Cookies.get('token')
+    const moderator = Cookies.get('moderator')
 
     return (
         <Router>
             <Routes>
                 <Route path='/' element={<Home theme={theme} token={token}/>}/>
-                <Route path='/users/:id' element={<User theme={theme} token={token}/>}/>
-                <Route path='/questions/:id' element={<Question theme={theme} token={token}/>}/>
+                <Route path='/users/:id' element={<User theme={theme} token={token} moderator={moderator}/>}/>
+                <Route path='/questions/:id' element={<Question theme={theme} token={token} moderator={moderator}/>}/>
                 <Route path='/answers/:id' element={<Answer theme={theme} token={token}/>}/>
                 <Route path='/tag/:tag' element={<Tag theme={theme} token={token}/>}/>
                 <Route path='/login' element={<Login theme={theme} token={token}/>}/>

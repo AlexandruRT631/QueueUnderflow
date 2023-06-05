@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-import {Avatar, Box, Container, ThemeProvider, Typography} from "@mui/material";
+import {Avatar, Box, Button, Container, ThemeProvider, Typography} from "@mui/material";
 import DisplayPost from "../Display/DisplayPost";
 import DisplayBar from "../Display/DisplayBar";
 
@@ -29,6 +29,24 @@ const User = (props) => {
             })
             .catch(err => console.log(err))
     }, [id])
+
+
+
+    const onClickBan = () => {
+        console.log(user);
+        console.log(typeof(id))
+        axios.put(`http://localhost:8080/users/banUserById/${id}`)
+            .then((res) => {
+                if (res.status === 200) {
+                    //console.log("Successful downvote")
+                    setUser(res.data)
+                }
+                //console.log(res.data);
+            })
+            .catch((error) => {
+                console.log("An error occurred:", error);
+            });
+    }
 
     return loaded ?
         (
@@ -69,6 +87,16 @@ const User = (props) => {
                                     sx={{alignSelf: 'center', color: 'primary.main'}}>Moderator</Typography>}
                                 {user.banned &&
                                     <Typography sx={{alignSelf: 'center', color: 'red'}}>Banned</Typography>}
+                                {props.moderator === 'true' && user.banned === true &&
+                                    <Button variant="contained" onClick={() => {
+                                        onClickBan()
+                                    }} sx={{m: 1, alignSelf: 'center'}}>Unban</Button>
+                                }
+                                {props.moderator === 'true' && user.banned === false &&
+                                    <Button variant="contained" onClick={() => {
+                                        onClickBan()
+                                    }} sx={{m: 1, alignSelf: 'center'}}>Ban</Button>
+                                }
                             </Box>
                             <Box sx={{width: '70%', bgcolor: 'secondary.main', p: 2}}>
                                 {user.questions.length > 0 && (

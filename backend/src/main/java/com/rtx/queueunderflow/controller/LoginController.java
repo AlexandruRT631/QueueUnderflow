@@ -1,6 +1,7 @@
 package com.rtx.queueunderflow.controller;
 
 import com.rtx.queueunderflow.dto.LoginDTO;
+import com.rtx.queueunderflow.dto.UserDTO;
 import com.rtx.queueunderflow.entity.User;
 import com.rtx.queueunderflow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,22 @@ public class LoginController {
     UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginRequest) {
+    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginRequest) {
         String email = loginRequest.geteMail();
         String password = loginRequest.getPassword();
 
         User user = userService.findByeMail(email);
 
         if (user != null && password.equals(hashPassword(user.getPassword()))) {
-            String authToken = generateAuthToken(user.getUserId());
-            return ResponseEntity.ok(authToken);
+            if (user.isBanned()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            else {
+                return ResponseEntity.ok(new UserDTO(user));
+            }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-    }
-
-    private String generateAuthToken(Long userId) {
-        // Implement your authentication token generation logic here
-        // Generate a unique authentication token based on the userId
-        // Store the token in a cache or database for later verification
-        // Return the generated authentication token
-        return userId.toString();
     }
 
     private String hashPassword(String password) {
