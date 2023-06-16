@@ -61,7 +61,7 @@ FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 insert into users (first_name, last_name, e_mail, pass, picture) values
-( "Alexandru", "RT", "allextodor@gmail.com", "parola", "https://avatars.githubusercontent.com/u/50906589?v=4" );
+( "Alexandru", "RT", "test3@gmail.com", "parola", "https://avatars.githubusercontent.com/u/50906589?v=4" );
 insert into users (first_name, last_name, e_mail, pass, phone, banned) values
 ( "Sergiu", "RT", "test2@yahoo.com", "parola2", "0000000000", true );
 insert into users (first_name, last_name, e_mail, pass, moderator) values
