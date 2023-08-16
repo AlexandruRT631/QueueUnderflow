@@ -17,6 +17,37 @@ public class Repository: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<User>()
+            .Property(u => u.Picture)
+            .HasDefaultValue("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+        
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Questions)
+            .WithOne(q => q.User)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Answers)
+            .WithOne(a => a.User)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.AnswerVotes)
+            .WithOne(a => a.User)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<Question>()
+            .HasMany(q => q.Votes)
+            .WithOne()
+            .HasForeignKey("QuestionId");
+
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.User)
+            .WithMany(u => u.Questions) // Assuming you have a navigation property on User entity to represent the Questions collection
+            .HasForeignKey(q => q.UserId);
+        
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.User)
             .WithMany(u => u.Answers)
@@ -27,30 +58,15 @@ public class Repository: DbContext
             .WithMany(q => q.Answers)
             .HasForeignKey(a => a.QuestionId);
 
-        modelBuilder.Entity<Question>()
-            .HasOne(q => q.User)
-            .WithMany(u => u.Questions)
-            .HasForeignKey(q => q.UserId);
+        modelBuilder.Entity<Answer>()
+            .HasMany(a => a.Votes)
+            .WithOne()
+            .HasForeignKey("AnswerId");
 
         modelBuilder.Entity<AnswerVotes>()
             .HasOne(av => av.User)
             .WithMany(u => u.AnswerVotes)
             .HasForeignKey(av => av.UserId);
-
-        // Model builder commands for the Vote collections
-        modelBuilder.Entity<Answer>()
-            .HasMany(a => a.Votes)
-            .WithOne()
-            .HasForeignKey("AnswerId");
-        modelBuilder.Entity<Question>()
-            .HasMany(q => q.Votes)
-            .WithOne()
-            .HasForeignKey("QuestionId");
-
-        // Default picture for users
-        modelBuilder.Entity<User>()
-            .Property(u => u.Picture)
-            .HasDefaultValue("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
         
         modelBuilder.Entity<Vote>()
             .HasKey(v => new { v.UserId, v.PositiveVote });
@@ -62,7 +78,5 @@ public class Repository: DbContext
             .HasOne(qt => qt.Question)
             .WithMany(q => q.Tags)
             .HasForeignKey(qt => qt.QuestionId);
-
-        base.OnModelCreating(modelBuilder);
     }
 }

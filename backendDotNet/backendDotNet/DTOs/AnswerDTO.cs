@@ -9,7 +9,7 @@ public class AnswerDTO
     public string UserFirstName { get; set; }
     public string UserLastName { get; set; }
     public string UserPicture { get; set; }
-    public long QuestionId;
+    public long QuestionId { get; set; }
     public string QuestionTitle { get; set; }
     public string Content { get; set; }
     public string Date { get; set; }
@@ -30,6 +30,6 @@ public class AnswerDTO
         Date = answer.Date.ToString("dd/MM/yyyy HH:mm:ss");
         Picture = answer.Picture;
         Votes = answer.Votes != null ? answer.Votes.ToList() : new List<Vote>();
-        userScore = 0;
+        userScore = 0.0;
     }
 }

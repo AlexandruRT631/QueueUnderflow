@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backendDotNet.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("users")]
 public class UserController
 {
     private readonly UserService _userService;
@@ -15,13 +15,13 @@ public class UserController
         _userService = userService;
     }
     
-    [HttpGet(Name = "GetUsers")]
+    [HttpGet("getAll")]
     public List<UserDTO> Get()
     {
         return _userService.GetAll();
     }
     
-    [HttpGet("{userId}", Name = "GetUserById")]
+    [HttpGet("getById/{userId:long}")]
     public UserDTO? GetById(long userId)
     {
         return _userService.GetById(userId);

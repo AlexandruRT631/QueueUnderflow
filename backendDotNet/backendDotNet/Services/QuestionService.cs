@@ -20,11 +20,12 @@ public class QuestionService
         {
             var questions = _repository.Questions.AsQueryable()
                 .OrderByDescending(q => q.Date)
-                .Select(q => new QuestionDTO(q))
                 .ToList();
 
             var end = Math.Min(start + pageSize, questions.Count);
-            return questions.GetRange(start, end - start);
+            return questions.GetRange(start, end - start)
+                .Select(q => new QuestionDTO(q))
+                .ToList();;
         }
         catch(Exception e)
         {

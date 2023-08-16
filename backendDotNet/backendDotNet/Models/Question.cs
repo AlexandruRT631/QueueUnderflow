@@ -26,7 +26,7 @@ public class Question
     [Column("picture")]
     public string? Picture { get; set; }
 
-    public ICollection<QuestionTag>? Tags { get; set; }
-    public ICollection<Answer>? Answers { get; set; }
-    public ICollection<Vote>? Votes { get; set; }
+    public virtual ICollection<QuestionTag>? Tags { get; set; }
+    public virtual ICollection<Answer>? Answers { get; set; }
+    public virtual ICollection<Vote>? Votes { get; set; }
 }

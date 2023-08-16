@@ -1,8 +1,8 @@
 ﻿using backendDotNet.DTOs;
 using backendDotNet.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace backendDotNet.Services;
-
 
 public class UserService: IService<UserDTO>
 {
@@ -15,7 +15,10 @@ public class UserService: IService<UserDTO>
 
     public List<UserDTO> GetAll()
     {
-        return _repository.Users.ToList().Select(user => new UserDTO(user)).ToList();
+        return _repository.Users
+            .Include(u => u.Questions)
+            .Include(u => u.Answers)
+            .ToList().Select(user => new UserDTO(user)).ToList();
     }
 
     public UserDTO? GetById(long id)

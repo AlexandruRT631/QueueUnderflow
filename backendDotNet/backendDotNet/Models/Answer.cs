@@ -27,5 +27,5 @@ public class Answer
     [Column("picture")]
     public string? Picture { get; set; }
 
-    public ICollection<Vote>? Votes { get; set; }
+    public virtual ICollection<Vote>? Votes { get; set; }
 }

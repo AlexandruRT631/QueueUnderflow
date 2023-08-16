@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backendDotNet.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("answers")]
 public class AnswerController
 {
     private readonly AnswerService _answerService;
@@ -15,13 +15,13 @@ public class AnswerController
         _answerService = answerService;
     }
     
-    [HttpGet(Name = "GetAnswers")]
+    [HttpGet("getAll")]
     public List<AnswerDTO> Get()
     {
         return _answerService.GetAll();
     }
     
-    [HttpGet("{answerId}", Name = "GetAnswerById")]
+    [HttpGet("getById/{answerId:long}")]
     public AnswerDTO? GetById(long answerId)
     {
         return _answerService.GetById(answerId);

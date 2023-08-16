@@ -34,7 +34,7 @@ public class User
     [Column("banned")]
     public bool Banned { get; set; }
 
-    public ICollection<Question>? Questions { get; set; }
-    public ICollection<Answer>? Answers { get; set; }
-    public ICollection<AnswerVotes>? AnswerVotes { get; set; }
+    public virtual ICollection<Question>? Questions { get; set; }
+    public virtual ICollection<Answer>? Answers { get; set; }
+    public virtual ICollection<AnswerVotes>? AnswerVotes { get; set; }
 }
